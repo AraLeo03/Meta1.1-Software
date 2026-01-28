@@ -1,28 +1,19 @@
-const taskInput = document.getElementById("taskInput");
-const taskList = document.getElementById("taskList");
+import { addTask } from "./tasks.js";
+import { renderTasks } from "./ui.js";
 
-function addTask() {
-  const text = taskInput.value.trim();
-  if (text === "") return;
+const input = document.getElementById("taskInput");
+const btn = document.getElementById("addBtn");
 
-  const li = document.createElement("li");
+btn.addEventListener("click", async () => {
+  if (!input.value.trim()) return;
+  await addTask(input.value);
+  input.value = "";
+  renderTasks();
+});
 
-  const span = document.createElement("span");
-  span.textContent = text;
-
-  span.onclick = () => {
-    li.classList.toggle("completed");
-  };
-
-  const deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "X";
-  deleteBtn.onclick = () => {
-    li.remove();
-  };
-
-  li.appendChild(span);
-  li.appendChild(deleteBtn);
-  taskList.appendChild(li);
-
-  taskInput.value = "";
+// Service Worker
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./service-worker.js");
 }
+
+renderTasks();

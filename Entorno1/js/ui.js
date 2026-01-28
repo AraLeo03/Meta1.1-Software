@@ -1,31 +1,33 @@
 import { getTasks } from "./storage.js";
 import { toggleTask, deleteTask } from "./tasks.js";
 
-const list = document.getElementById("task-list");
+const list = document.getElementById("taskList");
 
-export function renderTasks() {
+export async function renderTasks() {
   list.innerHTML = "";
 
-  getTasks().forEach(task => {
+  const tasks = await getTasks();
+
+  tasks.forEach(task => {
     const li = document.createElement("li");
-
     li.className = task.completed ? "completed" : "";
-    li.textContent = task.text;
 
-    li.onclick = () => {
-      toggleTask(task.id);
+    const span = document.createElement("span");
+    span.textContent = task.text;
+    span.onclick = async () => {
+      await toggleTask(task.id);
       renderTasks();
     };
 
     const btn = document.createElement("button");
     btn.textContent = "❌";
-    btn.onclick = e => {
+    btn.onclick = async e => {
       e.stopPropagation();
-      deleteTask(task.id);
+      await deleteTask(task.id);
       renderTasks();
     };
 
-    li.appendChild(btn);
+    li.append(span, btn);
     list.appendChild(li);
   });
 }

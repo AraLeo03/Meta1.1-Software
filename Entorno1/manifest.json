@@ -6,6 +6,7 @@
   "background_color": "#ffffff",
   "theme_color": "#2563eb",
   "lang": "es",
+  "scope": "./",
   "icons": [
     {
       "src": "assets/icon-192.png",
